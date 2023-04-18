@@ -9,5 +9,7 @@ public interface EmployeeInterface {
 	public void DeSerialEmp() throws IOException;
 	public void sortByEid();
 	public void sortByEname();
+	public void deleteEmployee();
+	public void updateEmployee() throws IOException;
 	
 }

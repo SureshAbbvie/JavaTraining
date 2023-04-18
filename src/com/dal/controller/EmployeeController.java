@@ -1,16 +1,21 @@
 package com.dal.controller;
 
 import java.util.ArrayList;
+
 import java.util.Iterator;
 import java.util.List;
 import java.util.Scanner;
 import java.util.Collections;
 import com.dal.model.Employee;
 import java.io.*;
+import com.dal.dao.EmployeeDao;
+import com.dal.dao.EmployeeDaoImpl;
+
+import java.io.*;
 public class EmployeeController implements EmployeeInterface {
 	Employee emp;
 	List<Employee> emplist = new ArrayList<Employee>();
-	
+	EmployeeDao dao = new EmployeeDaoImpl();
 	public void addEmployee()
 	{		
 		emp = new Employee();
@@ -23,15 +28,19 @@ public class EmployeeController implements EmployeeInterface {
 		String ename= sc.next();
 		emp.setEname(ename);
 		emplist.add(emp);
+		dao.insertEmployee(emp);
 		System.out.println("Employee Added Succesfully");
 	}
 	
 	public void viewEmployee() {
 		//System.out.println(emp);
-		Iterator i = emplist.iterator();
-		while(i.hasNext()) {
-			System.out.println(i.next());
-		}
+//		Iterator i = emplist.iterator();
+//		while(i.hasNext()) {
+//			System.out.println(i.next());
+//		}
+		
+		//emplist.forEach(lis->System.out.println(lis));
+		dao.showEmployee();
 		
 	}
 	public void SerialEmp() throws IOException {
@@ -94,6 +103,35 @@ public class EmployeeController implements EmployeeInterface {
 		Collections.sort(emplist, Employee.NameComparator);
 		System.out.println(emplist);
 		
+	}
+	
+	public void deleteEmployee()
+	{		
+		emp = new Employee();
+		Scanner sc = new Scanner(System.in);
+		System.out.println("Enter Eid");
+		int eid= sc.nextInt();
+		emp.setEid(eid);
+		dao.deleteEmployee(eid);
+	}
+	public void updateEmployee() throws IOException {
+		
+		emp = new Employee();
+		try{
+		InputStreamReader isr = new InputStreamReader(System.in);
+		BufferedReader br = new BufferedReader(isr);
+		System.out.println("Enter Eid");
+		String eid = br.readLine();
+		emp.setEid(Integer.parseInt(eid));
+		System.out.println("Enter Emp Name:");
+		String ename = br.readLine();
+		emp.setEname(ename);
+		} catch(IOException IO) {
+			System.out.println("IO Exception");
+		}
+
+		
+		//System.out.println("Employee deleted Succesfully");
 	}
 	
 }

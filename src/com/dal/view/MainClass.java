@@ -1,6 +1,7 @@
 package com.dal.view;
 
 import java.util.Scanner;
+import java.util.function.BiPredicate;
 import java.io.*;
 
 import com.dal.controller.EmployeeController;
@@ -23,6 +24,8 @@ public class MainClass {
 			System.out.println("4. DeSerialize Employee");
 			System.out.println("5. Sort By Employee ID");
 			System.out.println("6. Sort By Employee Name");
+			System.out.println("7. Delete Employee by id");
+			System.out.println("8. Update Employee name");
 			int ch = sc.nextInt();
 			switch (ch) {
 			case 1: {
@@ -49,6 +52,14 @@ public class MainClass {
 				ec.sortByEname();
 				break;
 			}
+			case 7: {
+				ec.deleteEmployee();
+				break;
+			}
+			case 8: {
+				ec.updateEmployee();
+				break;
+			}
 			default: {
 				System.out.println("Enter right choice");
 				break;
@@ -73,12 +84,24 @@ public class MainClass {
 			uname = br.readLine();
 			System.out.println("Enter Password:");
 			pwd = br.readLine();
-			if (uname.equals("test") && pwd.equals("pass")) {
+			
+			
+			// Java 7
+//			if (uname.equals("test") && pwd.equals("pass")) {
+//				System.out.println("Welcome" + uname);
+//				addViewEmp();
+//			} else {
+//				throw new UserNotFoundException("User "+uname+" not found");
+//			}
+			// Java 8
+			BiPredicate<String, String> res = (un, pw) -> un.equals("test") && pw.equals("pass");
+			if (res.test(uname, pwd)) {
 				System.out.println("Welcome" + uname);
 				addViewEmp();
 			} else {
 				throw new UserNotFoundException("User "+uname+" not found");
 			}
+						
 		} catch (Exception ex) {
 			System.out.println("except"+ex);
 			ex.printStackTrace();
