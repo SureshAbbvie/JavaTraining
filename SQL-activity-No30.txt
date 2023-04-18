@@ -1,0 +1,22 @@
+
+NO 30:
+
+144. List the employee Name, Job, Annual salary, Deptno, dept name, and grade who earn 36000 a year and who are not CLERKS.
+
+select e.ename,e.JOB, e.sal*12 "Annual salary",d.deptno,d.dname,s.grade from emp e join dept d on e.sal*12>36000 join SALGRADE s on e.job !='CLERK';
+
+145. List the Name, Job and Salary of the emps who are not belonging to the department 10 but who have the same Job or Salary as the emps of dept 10:
+
+SELECT * FROM EMP E1 WHERE DEPTNO <> 10 AND (JOB IN (SELECT JOB fROM EMP E2 WHERE E2.DEPTNO = 10) OR SAL IN (SELECT SAL fROM EMP E2 WHERE E2.DEPTNO = 10))
+ORDER BY E1.EMPNO;
+
+ 
+
+SELECT DISTINCT E1.* fROM EMP E1 JOIN EMP E2 ON E1.JOB = E2.JOB OR E1.SAL = E2.SAL
+WHERE E1.DEPTNO <> 10 AND E2.DEPTNO = 10
+ORDER BY E1.EMPNO;
+
+146. List the details of emps working at Chicago.
+select * from emp where deptno = (select deptno from dept where loc = 'CHICAGO')
+
+
