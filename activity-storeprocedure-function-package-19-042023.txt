@@ -1,0 +1,40 @@
+
+create or replace package emppack
+ as
+      procedure UPD_SAL(num in number,enam out varchar2); 
+      function GET_SERVICE_YRS(eno in number) return number;
+ end;
+ /
+ create or replace package body emppack
+ as
+    procedure UPD_SAL(jobs in varchar,minm in number,maxi in number)
+as
+flag number(5);
+begin
+  -- checkdata := select ename into enam from emp1 where job=job and sal>;
+ select count(*) into flag from emp1 where job=jobs and sal>maxi;
+  if(flag=0) then
+  update emp1 set sal=maxi where job=jobs;
+   dbms_output.put_line('updated ');
+   else
+   dbms_output.put_line('Already ' || flag || ' employee getting more salary than max');
+    end if;
+end UPD_SAL;
+    
+function GET_SERVICE_YRS(eno in number)
+return varchar2
+is
+ser number(10);
+begin
+select FLOOR((to_date(SYSDATE)-to_date(hiredate))/365) into ser from emp where EMPNO = eno;
+EXCEPTION
+WHEN no_data_found THEN
+if ser is null then
+--dbms_output.put_line('No such employee found');
+raise_application_error(-20000,'No such employee found');
+end if;
+end;
+return ser;
+END GET_SERVICE_YRS;
+end emppack;
+/
